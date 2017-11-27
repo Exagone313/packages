@@ -1,0 +1,162 @@
+# vim:ts=2 sw=2 et
+# $Id$
+# Maintainer:  Elouan Martinet <exa@elou.world>
+# Contributor: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Sébastien Luttringer
+# Contributor: Drew DeVault
+
+pkgname=nginx
+pkgver=1.13.7
+pkgrel=1
+pkgdesc='Lightweight HTTP server'
+_libressl_version=2.6.3
+_brotli_version=0.6.1
+_echo_version=0.61
+_headers_more_version=0.33
+arch=('x86_64')
+url='https://nginx.org'
+license=('custom')
+depends=('pcre' 'zlib' 'geoip')
+backup=('etc/nginx/fastcgi.conf'
+        'etc/nginx/fastcgi_params'
+        'etc/nginx/koi-win'
+        'etc/nginx/koi-utf'
+        'etc/nginx/nginx.conf'
+        'etc/nginx/scgi_params'
+        'etc/nginx/uwsgi_params'
+        'etc/nginx/win-utf'
+        'etc/logrotate.d/nginx')
+provides=('nginx')
+conflicts=('nginx')
+groups=('selfbuild')
+source=($url/download/nginx-$pkgver.tar.gz{,.asc}
+        "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${_libressl_version}.tar.gz"{,.asc}
+        brotli.tar.gz::https://github.com/Exagone313/brotli/archive/v${_brotli_version}.tar.gz
+        ngx_brotli.tar.gz::https://github.com/Exagone313/ngx_brotli/archive/v${_brotli_version}.tar.gz
+        echo-nginx-module.tar.gz::https://github.com/openresty/echo-nginx-module/archive/v${_echo_version}.tar.gz
+        headers-more-nginx-module.tar.gz::https://github.com/openresty/headers-more-nginx-module/archive/v${_headers_more_version}.tar.gz
+        service
+        logrotate
+        mime.types)
+validpgpkeys=('B0F4253373F8F6F510D42178520A9993A1C052F8'
+              'A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5')
+# nginx: Maxim Dounin <mdounin@mdounin.ru>
+# libressl: Brent Cook <bcook@openbsd.org>
+sha512sums=('77ee919315e0b16ec042ec80b5a9ed01ef057d30fded4c1991fc1b7648d41433b94897fbe6f0900299d3596ede7b25e842e47c44865b1c3d91d2dc6363d23fc0'
+            'SKIP'
+            '5c0a0f86ecad1226c2d9a3a8a2e6f412ac0941d402c213ae1d293cd90c6a684198410db8c5250f83b8e2b00968a089afc39e90e053669fc27f82a4eb7c65f5c9'
+            'SKIP'
+            '626668deee00fb09d8fdb4d7797cb33cb9d6907d098af28aabc930e08666f38709a1e79b39849d16f46dc740b9896b213e1918959aea89d7efad078e90464187'
+            '059749aa882df065954a232e9f3519e38149bebc2666b1b392198495f2c709cc77ccaaa35383405049c44b64517897990da10d9e065787e0a54641b371b11390'
+            'c90b81a4e85a8e9beeb5ff591dc91adb25fa4e0b6cb47086b577e5fa36db2368442dd011187675e358781956c364b949bc4d920ca2b534481b21c9987d2a9a3b'
+            '13165b1b8d4be281b8bd2404fa48d456013d560bace094c81da08a35dc6a4f025a809a3ae3a42be6bbf67abbcbe41e0730aba06f905220f3baeb01e1192a7d37'
+            '4f90db6b8b5c13762b96ddff9ca4e846762d46b90be27c7c9d54cec6f7f12fc95585f8455919296edb0255405dd80af8ee86780b805631b72eb74ee59f359715'
+            '9232342c0914575ce438c5a8ee7e1c25b0befb457a2934e9cb77d1fe9a103634ea403b57bc0ef0cd6cf72248aee5e5584282cea611bc79198aeac9a65d8df5d7'
+            '0cd9112766e8834bc5b741704b26c6418c9aed2f0c9550a9d7cfa7f20ec1cfd944987f6c7880e3f299dfea0cce8c89c9b712e0713e757f461f04f0ab814bd803')
+
+_flags=(
+  --with-compat
+  --with-file-aio
+  --with-openssl=../libressl-${_libressl_version}
+  --with-pcre-jit
+  --with-stream
+  --with-threads
+)
+
+_module_flags=(
+  --with-http_addition_module
+  --with-http_auth_request_module
+  --with-http_dav_module
+  --with-http_degradation_module
+  --with-http_flv_module
+  --with-http_geoip_module
+  --with-http_gunzip_module
+  --with-http_gzip_static_module
+  --with-http_mp4_module
+  --with-http_perl_module
+  --with-http_random_index_module
+  --with-http_realip_module
+  --with-http_secure_link_module
+  --with-http_slice_module
+  --with-http_ssl_module
+  --with-http_stub_status_module
+  --with-http_sub_module
+  --with-http_v2_module
+  --with-stream_geoip_module
+  --with-stream_realip_module
+  --with-stream_ssl_module
+  --with-stream_ssl_preread_module
+  --add-module=../ngx_brotli-${_brotli_version}
+  --add-module=../echo-nginx-module-${_echo_version}
+  --add-module=../headers-more-nginx-module-${_headers_more_version}
+)
+
+prepare() {
+  cd ngx_brotli-${_brotli_version}/deps
+  rm -rf brotli # ln -sfn does not seem to work
+  ln -s ../../brotli-${_brotli_version} brotli
+}
+
+build() {
+  cd $provides-$pkgver
+  ./configure \
+    --prefix=/etc/nginx \
+    --conf-path=/etc/nginx/nginx.conf \
+    --sbin-path=/usr/bin/nginx \
+    --pid-path=/run/nginx.pid \
+    --lock-path=/run/lock/nginx.lock \
+    --user=http \
+    --group=http \
+    --http-log-path=/var/log/nginx/access.log \
+    --error-log-path=stderr \
+    --http-client-body-temp-path=/var/lib/nginx/client-body \
+    --http-proxy-temp-path=/var/lib/nginx/proxy \
+    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+    --http-scgi-temp-path=/var/lib/nginx/scgi \
+    --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+    --with-cc-opt="-fPIE -D_FORTIFY_SOURCE=2 -fstack-check -fstack-protector-strong" \
+    --with-ld-opt="-Wl,-z,now -lrt" \
+    ${_flags[@]} \
+    ${_module_flags[@]}
+
+  make
+}
+
+package() {
+  cd $provides-$pkgver
+  make DESTDIR="$pkgdir" install
+
+  sed -e 's|\<user\s\+\w\+;|user html;|g' \
+    -e '44s|html|/usr/share/nginx/html|' \
+    -e '54s|html|/usr/share/nginx/html|' \
+    -i "$pkgdir"/etc/nginx/nginx.conf
+
+  rm "$pkgdir"/etc/nginx/*.default
+  rm "$pkgdir"/etc/nginx/mime.types
+  install -Dm644 ../mime.types "$pkgdir"/etc/nginx/mime.types
+
+  install -d "$pkgdir"/var/lib/nginx
+  install -dm700 "$pkgdir"/var/lib/nginx/proxy
+
+  chmod 755 "$pkgdir"/var/log/nginx
+  chown root:root "$pkgdir"/var/log/nginx
+
+  install -d "$pkgdir"/usr/share/nginx
+  mv "$pkgdir"/etc/nginx/html/ "$pkgdir"/usr/share/nginx
+
+  install -Dm644 ../logrotate "$pkgdir"/etc/logrotate.d/nginx
+  install -Dm644 ../service "$pkgdir"/usr/lib/systemd/system/nginx.service
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$provides/LICENSE
+  # TODO copy licenses for modules to make a legally distributable package
+
+  rmdir "$pkgdir"/run
+
+  install -d "$pkgdir"/usr/share/man/man8/
+  gzip -9c man/nginx.8 > "$pkgdir"/usr/share/man/man8/nginx.8.gz
+
+  for i in ftdetect indent syntax; do
+    install -Dm644 contrib/vim/$i/nginx.vim \
+      "$pkgdir/usr/share/vim/vimfiles/$i/nginx.vim"
+  done
+}
