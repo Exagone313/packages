@@ -38,7 +38,8 @@ source=($url/download/nginx-$pkgver.tar.gz{,.asc}
         headers-more-nginx-module.tar.gz::https://github.com/openresty/headers-more-nginx-module/archive/v${_headers_more_version}.tar.gz
         service
         logrotate
-        mime.types)
+        mime.types
+        generate-nginx-mimetypes.sh)
 validpgpkeys=('B0F4253373F8F6F510D42178520A9993A1C052F8'
               'A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5')
 # nginx: Maxim Dounin <mdounin@mdounin.ru>
@@ -53,7 +54,8 @@ sha512sums=('77ee919315e0b16ec042ec80b5a9ed01ef057d30fded4c1991fc1b7648d41433b94
             '13165b1b8d4be281b8bd2404fa48d456013d560bace094c81da08a35dc6a4f025a809a3ae3a42be6bbf67abbcbe41e0730aba06f905220f3baeb01e1192a7d37'
             '4f90db6b8b5c13762b96ddff9ca4e846762d46b90be27c7c9d54cec6f7f12fc95585f8455919296edb0255405dd80af8ee86780b805631b72eb74ee59f359715'
             '9232342c0914575ce438c5a8ee7e1c25b0befb457a2934e9cb77d1fe9a103634ea403b57bc0ef0cd6cf72248aee5e5584282cea611bc79198aeac9a65d8df5d7'
-            '0cd9112766e8834bc5b741704b26c6418c9aed2f0c9550a9d7cfa7f20ec1cfd944987f6c7880e3f299dfea0cce8c89c9b712e0713e757f461f04f0ab814bd803')
+            '0cd9112766e8834bc5b741704b26c6418c9aed2f0c9550a9d7cfa7f20ec1cfd944987f6c7880e3f299dfea0cce8c89c9b712e0713e757f461f04f0ab814bd803'
+            '8b589a7c4706887507e0b1f6b00dee3367d24bad1dd4ad7f9eea9195455d1017d409798e10006bcaad4ac4dbb4ed1922b89d7fe3209c6cf78a26c1843874b1a7')
 
 _flags=(
   --with-compat
@@ -134,7 +136,8 @@ package() {
 
   rm "$pkgdir"/etc/nginx/*.default
   rm "$pkgdir"/etc/nginx/mime.types
-  install -Dm644 ../mime.types "$pkgdir"/etc/nginx/mime.types
+  sh ../generate-nginx-mimetypes.sh < ../mime.types > "$pkgdir"/etc/nginx/mime.types
+  chown 644 "$pkgdir"/etc/nginx/mime.types
 
   install -d "$pkgdir"/var/lib/nginx
   install -dm700 "$pkgdir"/var/lib/nginx/proxy
