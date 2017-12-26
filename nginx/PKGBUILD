@@ -7,10 +7,10 @@
 # Contributor: Drew DeVault
 
 pkgname=nginx
-pkgver=1.13.7
+pkgver=1.13.8
 pkgrel=1
 pkgdesc='Lightweight HTTP server'
-_libressl_version=2.6.3
+_libressl_version=2.6.4
 _brotli_version=0.6.1
 _echo_version=0.61
 _headers_more_version=0.33
