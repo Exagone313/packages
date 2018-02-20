@@ -7,7 +7,7 @@
 # Contributor: Drew DeVault
 
 pkgname=nginx
-pkgver=1.13.8
+pkgver=1.13.9
 pkgrel=1
 pkgdesc='Lightweight HTTP server'
 _libressl_version=2.6.4
@@ -31,7 +31,7 @@ provides=('nginx')
 conflicts=('nginx')
 groups=('selfbuild')
 source=($url/download/nginx-$pkgver.tar.gz{,.asc}
-        "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${_libressl_version}.tar.gz"{,.asc}
+        "https://ftp.eu.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${_libressl_version}.tar.gz"{,.asc}
         brotli.tar.gz::https://github.com/Exagone313/brotli/archive/v${_brotli_version}.tar.gz
         ngx_brotli.tar.gz::https://github.com/Exagone313/ngx_brotli/archive/v${_brotli_version}.tar.gz
         echo-nginx-module.tar.gz::https://github.com/openresty/echo-nginx-module/archive/v${_echo_version}.tar.gz
@@ -44,7 +44,7 @@ validpgpkeys=('B0F4253373F8F6F510D42178520A9993A1C052F8'
               'A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5')
 # nginx: Maxim Dounin <mdounin@mdounin.ru>
 # libressl: Brent Cook <bcook@openbsd.org>
-sha512sums=('f2a4d41941ec223afcb57a6deb6523e0d4f54f96c7362835d366fa04a4b4578f6c4f27aa7774c1ecd40a42087df83e5c03d024e72caba83c558ec7e580c756a1'
+sha512sums=('92c34c182b59e0597a6b0af996770673b08b075f47285e2fbb9d8df59bb9c38fcca8e77bc6e3ca8e019500d041f96437b6b4f80d5dfd914a6f843ca919dac07b'
             'SKIP'
             '181761da573ff392aaee17dd3dde416d7cbb299ab3e07b49c97e279ceb3f619e78d1dc9ec4c59b0af024f0a8270ff31fe37f8282d0392be34c3143c9647cd246'
             'SKIP'
