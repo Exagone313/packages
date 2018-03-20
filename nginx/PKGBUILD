@@ -7,7 +7,7 @@
 # Contributor: Drew DeVault
 
 pkgname=nginx
-pkgver=1.13.9
+pkgver=1.13.10
 pkgrel=1
 pkgdesc='Lightweight HTTP server'
 _libressl_version=2.6.4
@@ -44,7 +44,7 @@ validpgpkeys=('B0F4253373F8F6F510D42178520A9993A1C052F8'
               'A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5')
 # nginx: Maxim Dounin <mdounin@mdounin.ru>
 # libressl: Brent Cook <bcook@openbsd.org>
-sha512sums=('92c34c182b59e0597a6b0af996770673b08b075f47285e2fbb9d8df59bb9c38fcca8e77bc6e3ca8e019500d041f96437b6b4f80d5dfd914a6f843ca919dac07b'
+sha512sums=('33c894e00a13703db4195bc4a1f8fd512af165d8793ba00a7bf25e0e410136c8b4a94b14a81885be5fa2625626c810802282162c6d7a4f1f251a5ffccab218b3'
             'SKIP'
             '181761da573ff392aaee17dd3dde416d7cbb299ab3e07b49c97e279ceb3f619e78d1dc9ec4c59b0af024f0a8270ff31fe37f8282d0392be34c3143c9647cd246'
             'SKIP'
