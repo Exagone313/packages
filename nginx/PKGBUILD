@@ -8,9 +8,9 @@
 
 pkgname=nginx
 pkgver=1.13.12
-pkgrel=1
+pkgrel=2
 pkgdesc='Lightweight HTTP server'
-_libressl_version=2.7.2
+_libressl_version=2.7.3
 _brotli_version=0.6.1
 _echo_version=0.61
 _headers_more_version=0.33
@@ -46,7 +46,7 @@ validpgpkeys=('B0F4253373F8F6F510D42178520A9993A1C052F8'
 # libressl: Brent Cook <bcook@openbsd.org>
 sha512sums=('c61668d4999d43ccd5ed8e99bd2f6992190503bb3c4103a22871e346feb8cbd049b04416ca7eb982c122a9a29bb21c6bb9f934411dd80bc02d946105f7917873'
             'SKIP'
-            '12d00d057d449eb4119fc2f07034ebc0f1bbcb1602c0e07ef03b50440045eafd70594ddee352946cd9409aed8aceeb6988ba1643f582566fe3498499d94ece49'
+            '5fafff32bc4effa98c00278206f0aeca92652c6a8101b2c5da3904a5a3deead2d1e3ce979c644b8dc6060ec216eb878a5069324a0396c0b1d7b6f8169d509e9b'
             'SKIP'
             '626668deee00fb09d8fdb4d7797cb33cb9d6907d098af28aabc930e08666f38709a1e79b39849d16f46dc740b9896b213e1918959aea89d7efad078e90464187'
             '059749aa882df065954a232e9f3519e38149bebc2666b1b392198495f2c709cc77ccaaa35383405049c44b64517897990da10d9e065787e0a54641b371b11390'
